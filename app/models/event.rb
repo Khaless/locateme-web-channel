@@ -11,7 +11,7 @@ class Event
 	end
 
 	def members
-		$redis.smembers("event:" + @guid + ":members").map { |guid| User.by_guid(guid) }
+		$redis.smembers("event:" + @guid + ":users").map { |guid| User.by_guid(guid) }
 	end
 
 	class << self
