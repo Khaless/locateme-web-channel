@@ -15,7 +15,7 @@ class EventsController < ApplicationController
 	end
 
 	def write
-		@event.write(params[:message])
+		@event.publish(params[:message])
 		redirect_to :action => "show"
 	end
 

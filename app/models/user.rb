@@ -1,42 +1,19 @@
 
-class User
+class User < KVBase
 
-	attr_reader :guid
+	property :email, :provide_indirection => true
+	property :hashed_password
+	property :salt
 
-	# Method used to retrieve various properties
-	PropertyMethods = {
-		:topics => :smembers,
-		:name		=> :get
-	}
+	subkey :events, Redis::Set
 
-	def initialize(guid)
-		# We Lazily get properties
-		@guid = guid
-		@properties = {}
+	def password=(password)
+		self.salt = UUIDTools::UUID.random_create.to_s if self.salt.blank?
+		self.hashed_password = Digest::SHA256.hexdigest(password + self.salt)
 	end
 
-	def get_property(property)
-		throw "Invalid Property" unless PropertyMethods.key?(property.to_sym)
-		unless @properties.key?(property.to_sym)
-			key = sprintf "user:%s:%s", @guid, property.to_s
-			@properties[property.to_sym] = $redis.send(PropertyMethods[property.to_sym], key)
-		end
-		return @properties[property.to_sym]
-	end
-
-	class << self
-
-		def all_guids
-			$redis.keys("user:*").map do |key|
-				# guid part if the key is User:guid of 36 Chr:<Anything>
-				key[5,36]
-			end
-		end
-
-		def by_guid(guid)
-			User.new(guid)
-		end
-
+	def authenticate?(plain_password)
+		Digest::SHA256.hexdigest(plain_password + self.salt) == self.hashed_password
 	end
 
 end

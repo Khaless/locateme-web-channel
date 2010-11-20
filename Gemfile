@@ -9,6 +9,15 @@ gem 'sqlite3-ruby', :require => 'sqlite3'
 
 # Require redis gem
 gem 'redis'
+gem 'redis-objects'
+
+gem 'uuidtools'
+
+# Wirble and utility_belt when using console in dev
+group :development do
+	gem 'wirble'
+	gem 'utility_belt'
+end
 
 # Use unicorn as the web server
 # gem 'unicorn'
