@@ -1,12 +1,15 @@
 WebChannel::Application.routes.draw do |map|
-  resources :events
-
 
 	resources :events do
 		member do
 			post :write
 		end
 	end
+
+	resources :users 
+
+	match "account/register" => "account#register"
+	match "account/register/success" => "account#success"
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
