@@ -1,17 +1,11 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.0.0.beta3'
-
-# Bundle edge Rails instead:
-# gem 'rails', :git => 'git://github.com/rails/rails.git'
-
+gem 'rails', '3.0.3'
 gem 'sqlite3-ruby', :require => 'sqlite3'
-
-# Require redis gem
 gem 'redis'
 gem 'redis-objects'
-
 gem 'uuidtools'
+gem 'haml'
 
 # Wirble and utility_belt when using console in dev
 group :development do
