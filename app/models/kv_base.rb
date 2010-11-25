@@ -61,11 +61,11 @@ class KVBase
 				end
 				 
 				# we also define a class method,
-				# by_<indirection>
-				(class << self; self; end).send(:define_method, "by_" + __name.to_s) do |v|
+				# find_by_<indirection>
+				(class << self; self; end).send(:define_method, "find_by_" + __name.to_s) do |v|
 					guid = $redis.get(kify(:indirection, self.name, __name, v))
 					raise sprintf("%s[%s=%s] not found", self.name, __name, v) if guid.nil? or guid.blank?
-					self.by_guid(guid)
+					self.find_by_guid(guid)
 				end
 
 
@@ -87,7 +87,7 @@ class KVBase
 			end
 		end
 
-		def by_guid(guid)
+		def find_by_guid(guid)
 			self.new(guid)
 		end
 	
