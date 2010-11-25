@@ -16,9 +16,10 @@ class ApplicationController < ActionController::Base
 	
 	# Return an instance to the current logged on user or nil
 	def user
-		return nil if session[:user_guid].nil?
+		guid = session[:user_guid] || request.headers["X-Authenticated-By-Proxy"]
+		return nil if guid.nil?
 		return @user unless @user.nil?
-		return @user = User.find_by_guid(session[:user_guid]) rescue nil
+		return @user = User.find_by_guid(guid) rescue nil
 	end
 
 	# stores the supplied user into the current session
