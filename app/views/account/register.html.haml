@@ -1,6 +1,6 @@
 - content_for :title, "Register"
 %h1 Register
-- form_tag "/account/register" do
+= form_tag "/account/register" do
   %fieldset
     %label Email
     = text_field_tag :email

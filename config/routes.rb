@@ -8,7 +8,10 @@ WebChannel::Application.routes.draw do |map|
 
 	resources :users 
 
+
+	match "account/main" => "account#main"
 	match "account/register" => "account#register"
+	match "account/login" => "account#login"
 	match "account/register/success" => "account#success"
 
   # The priority is based upon order of creation:

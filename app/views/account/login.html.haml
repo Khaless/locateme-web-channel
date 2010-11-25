@@ -1,0 +1,12 @@
+- content_for :title, "Login"
+%h1 Login
+- unless @error.nil?
+  %div.error= @error
+= form_tag "/account/login" do
+  %fieldset
+    %label Email
+    = text_field_tag :email
+    %label Password
+    = password_field_tag :password
+    = submit_tag "Login"
+
