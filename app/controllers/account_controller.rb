@@ -1,7 +1,7 @@
 class AccountController < ApplicationController
 
 	skip_before_filter :http_authenticate, :only => [ :login, :register ]
-	before_filter :redirect_to_main_if_logged_in, :only => [ :login, :register ]
+	before_filter :redirect_to_main_if_logged_in, :only => [ :login, :register, :success ]
 
 	def redirect_to_main_if_logged_in
 		redirect_to :action => :main unless user.nil?
@@ -21,7 +21,7 @@ class AccountController < ApplicationController
 			u = User.new
 			u.email = params["email"]
 			u.password = params["password"]
-			redirect_to :action => "success"
+			redirect_to :action => :success
 			return
 		end
 
