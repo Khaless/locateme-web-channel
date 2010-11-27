@@ -96,8 +96,12 @@ class KVBase
 			args.map(&:to_s).map(&:downcase).join(":")
 		end
 
-	end
 
+	end
+		
+	def to_json
+		{ :guid => @guid }.merge(@properties.all).to_json
+	end
 
 	def kify(*args)
 		KVBase.kify(*args)
