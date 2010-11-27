@@ -99,8 +99,8 @@ class KVBase
 
 	end
 		
-	def to_json
-		{ :guid => @guid }.merge(@properties.all).to_json
+	def to_json(opt)
+		{ :guid => @guid }.merge(@properties.all).to_json(opt)
 	end
 
 	def kify(*args)
