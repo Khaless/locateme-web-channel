@@ -1,0 +1,11 @@
+- content_for :title, "Login"
+%h1 Event
+%h2=h @event.name
+%h3 Members
+%ul
+  - @event.users.each do |u|
+    %li=h u
+
+= form_for :event, :url => { :action => "write" } do |f|
+  = text_field_tag :message
+  = submit_tag "Login"
