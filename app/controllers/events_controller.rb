@@ -1,6 +1,6 @@
 class EventsController < ApplicationController
 
-	before_filter :setup_request, :only => [ :show, :edit, :write ]
+	before_filter :setup_request, :except => [ :create, :new, :index ]
 
 	def new
 		respond_to do |format|
@@ -19,6 +19,19 @@ class EventsController < ApplicationController
 			end
 			format.json do
 				render :status => 201, :json => event # 201 Created
+			end
+		end
+	end
+
+	# POST /event/<id>/join
+	def join
+		@event.users << user.guid
+		respond_to do |format|
+			format.html do
+				redirect_to :action => :show, :id => event.guid
+			end
+			format.json do
+				render :status => 200, :json => {}
 			end
 		end
 	end

@@ -3,6 +3,7 @@ WebChannel::Application.routes.draw do |map|
 	resources :events do
 		member do
 			post :write
+			post :join
 		end
 	end
 
