@@ -3,31 +3,56 @@ class AccountController < ApplicationController
 	skip_before_filter :http_authenticate, :only => [ :login, :register ]
 	before_filter :redirect_to_main_if_logged_in, :only => [ :login, :register, :success ]
 
+	# Ignore CSRF token for register, allows event-proxy to post to this easily.
+	skip_before_filter :verify_authenticity_token, :only => [ :register ] 
+
 	def redirect_to_main_if_logged_in
 		redirect_to :action => :main unless user.nil?
 	end
 
 	def register
+		
 		if request.post?
+
+			# TODO:
 			# Validate parameters (The redis data model does not
 			# do it for us (yet... We dont want to provide an ORM but 
 			# we do want to provide a way to validate fields and I think
 			# the best place to do this is the model.)
-			raise "Email is invalid" unless params["email"] =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
-			raise "Password is invalid" if params["password"].length < 6
+			@errors = []
+			@errors << "Email is invalid" unless params["email"] =~ /^([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})$/i
+			@errors << "Password is invalid" if params["password"].nil? or params["password"].length < 6
+			@errors << "Email already registered" unless User.find_by_email(params["email"]).nil? rescue true
 
-			# TODO: user model accept a dictionary of values which it can set with hmset after it
-			# does its initial hsetnx (which it needs to avoid race conditions).
-			u = User.new
-			u.email = params["email"]
-			u.password = params["password"]
-			redirect_to :action => :success
-			return
+			if @errors.length == 0
+
+				# TODO: user model accept a dictionary of values which it can set with hmset after it
+				# does its initial hsetnx (which it needs to avoid race conditions).
+				u = User.new
+				u.email = params["email"]
+				u.password = params["password"]
+
+				respond_to do |format|
+					format.html do
+						redirect_to :action => :success
+					end
+					format.json do 
+						render :status => 201, :json => u # 201 created
+					end
+				end
+
+				return
+			end
+
 		end
 
 		respond_to do |format|
 			format.html # register.html.haml
+			format.json do
+				render :status => 422, :json => {:errors => @errors}
+			end
 		end
+
 	end
 
 	def success
