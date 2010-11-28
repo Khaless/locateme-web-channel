@@ -25,9 +25,10 @@ class ApplicationController < ActionController::Base
 			# coming in from the event proxy. Make sure this is valid
 			# then set the user to whom the proxy wants. We also bypass
 			# the authenticity token (csrf protection mechanism)
-			# for a client authenticated by the proxy.
+			# for a client authenticated by the proxy by rewriting the request 
+			# to be whitelisted.
 			guid = request.headers["X-Authenticated-By-Proxy"]
-			params[:authenticity_token] = session[:_csrf_token] = "ProxyRequestIgnoresToken"
+			def request.forgery_whitelisted?; true; end
 		end
 		return nil if guid.nil?
 		return @user unless @user.nil?
