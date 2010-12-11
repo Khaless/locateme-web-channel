@@ -12,7 +12,7 @@ class EventsController < ApplicationController
 	def create
 		event = Event.new
 		event.name = params[:name]
-		event.users << user.guid
+		event.add_user(user)
 		respond_to do |format|
 			format.html do
 				redirect_to :action => :show, :id => event.guid
@@ -25,7 +25,7 @@ class EventsController < ApplicationController
 
 	# POST /event/<id>/join
 	def join
-		@event.users << user.guid
+		@event.add_user(user)
 		respond_to do |format|
 			format.html do
 				redirect_to :action => :show, :id => event.guid
