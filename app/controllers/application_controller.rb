@@ -27,6 +27,7 @@ class ApplicationController < ActionController::Base
 			# the authenticity token (csrf protection mechanism)
 			# for a client authenticated by the proxy by rewriting the request 
 			# to be whitelisted.
+			@authenticated_by_proxy = true
 			guid = request.headers["X-Authenticated-By-Proxy"]
 			def request.forgery_whitelisted?; true; end
 		end

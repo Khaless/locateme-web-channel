@@ -6,6 +6,7 @@ class User < KVBase
 	property :salt
 
 	subkey :events, Redis::Set
+	subkey :location, Redis::Value
 
 	def password=(password)
 		self.salt = UUIDTools::UUID.random_create.to_s if self.salt.blank?
@@ -14,6 +15,11 @@ class User < KVBase
 
 	def authenticate?(plain_password)
 		Digest::SHA256.hexdigest(plain_password + self.salt) == self.hashed_password
+	end
+
+	alias _location location
+	def location
+		ActiveSupport::JSON.decode(_location.value) rescue nil
 	end
 
 end

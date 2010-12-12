@@ -15,6 +15,8 @@ WebChannel::Application.routes.draw do |map|
 	match "account/login" => "account#login"
 	match "account/register/success" => "account#success"
 
+	match "sys/event-proxy/api/:action" => "EventProxyApi"
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
