@@ -14,7 +14,7 @@ class Event < KVBase
 		$redis.multi do
 			users << user.guid
 			user.events << @guid
-			$redis.publish(kify(:topic, :user, user.guid), {:event => :user_joined_event, :params => {:event_guid => @guid}}.to_json)
+			$redis.publish(kify(:topic, :user, user.guid), {:notification => :user_joined_event, :user => user.guid, :event => @guid }.to_json)
 		end
 	end
 end
