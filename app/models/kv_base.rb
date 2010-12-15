@@ -52,11 +52,15 @@ class KVBase
 				# as well as the normal value
 				self.send(:define_method, __name.to_s + "=") do |val|
 					self.instance_eval do
+						
+						# Todo: if we already have a value, remove the old indirection
+						
 						# Would be better do both of these sets atomically
 						if $redis.setnx(kify(:indirection, self.class.name, __name, val), @guid) != true
-							raise "Email Collision"
+							raise "Indirection Collision"
 						end
 						@properties[__name] = val
+
 					end
 				end
 				 

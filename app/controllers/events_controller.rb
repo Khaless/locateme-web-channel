@@ -13,6 +13,7 @@ class EventsController < ApplicationController
 		event = Event.new
 		event.name = params[:name]
 		event.add_user(user)
+		event.create_shorthash # For now, always create optional shorthash
 		respond_to do |format|
 			format.html do
 				redirect_to :action => :show, :id => event.guid
