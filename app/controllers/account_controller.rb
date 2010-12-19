@@ -1,6 +1,6 @@
 class AccountController < ApplicationController
 
-	skip_before_filter :http_authenticate, :only => [ :login, :register ]
+	skip_before_filter :http_authenticate, :only => [ :login, :register, :success ]
 	before_filter :redirect_to_main_if_logged_in, :only => [ :login, :register, :success ]
 
 	# Ignore CSRF token for register, allows event-proxy to post to this easily.
@@ -55,9 +55,6 @@ class AccountController < ApplicationController
 
 	end
 
-	def success
-	end
-
 	def login
 		if request.post?
 			begin
@@ -83,13 +80,17 @@ class AccountController < ApplicationController
 			format.html # register.html.haml
 		end
 	end
+	
+	def success
+		render # success.html.haml
+	end
 
 	def logout
+
 	end
 
 	def main
 
 	end
-
 
 end

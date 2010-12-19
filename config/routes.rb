@@ -12,8 +12,8 @@ WebChannel::Application.routes.draw do |map|
 
 	match "account/main" => "account#main"
 	match "account/register" => "account#register"
-	match "account/login" => "account#login"
 	match "account/register/success" => "account#success"
+	match "account/login" => "account#login"
 
 	match "sys/event-proxy/api/:action" => "EventProxyApi"
 
