@@ -1,12 +1,16 @@
 class UsersController < ApplicationController
 
-	# GET /users/new
-	def new
+	before_filter :setup_request
 
+	# GET /users/:id
+	def show
+		render # show.html.haml
 	end
+	
+	private
 
-	# POST /users
-	def create
+	def setup_request
+		@user = User.find_by_guid(params[:id])
 	end
 
 end

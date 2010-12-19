@@ -9,7 +9,6 @@ WebChannel::Application.routes.draw do |map|
 
 	resources :users 
 
-
 	match "account/main" => "account#main"
 	match "account/register" => "account#register"
 	match "account/register/success" => "account#success"

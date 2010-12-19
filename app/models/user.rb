@@ -22,4 +22,9 @@ class User < KVBase
 		ActiveSupport::JSON.decode(_location.value) rescue nil
 	end
 
+	# Temporary hack as we do not have a name/alias field yet
+	def name
+		return self.email 
+	end
+
 end

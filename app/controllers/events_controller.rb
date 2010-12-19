@@ -38,10 +38,15 @@ class EventsController < ApplicationController
 	end
 
 	def index
+		
+		# Produce a list of Events this user belongs to
+		@events = user.events.map { |guid| Event.find_by_guid(guid) }
 
 	end
 
 	def show
+		# Grab a list of users in this event
+		@users = @event.users.map { |guid| User.find_by_guid(guid) }
 		respond_to do |format|
 			format.html # show.html.haml
 		end
