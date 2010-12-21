@@ -1,6 +1,10 @@
 - content_for :title, "Login"
 %h1 Event
 %h2=h @event.name
+= flash[:notice] unless flash[:notice].blank?
+%div 
+  Leave Event
+  = link_to "Leave Event", leave_event_url, :method => :post
 %h3 Members
 %ul
   - @users.each do |u|

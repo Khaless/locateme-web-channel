@@ -12,6 +12,7 @@ class EventsController < ApplicationController
 	def create
 		event = Event.new
 		event.name = params[:name]
+		event.make_creator(user)
 		event.add_user(user)
 		event.create_shorthash # For now, always create optional shorthash
 		respond_to do |format|
@@ -33,6 +34,30 @@ class EventsController < ApplicationController
 			end
 			format.json do
 				render :status => 200, :json => {}
+			end
+		end
+	end
+
+	# POST /event/<id>/leave
+	def leave
+		if @event.is_creator(user)
+			respond_to do |format|
+				format.html do
+					redirect_to event_url(@event.guid), :notice => "You are the creator of this event, you cannot be removed."
+				end
+				format.json do
+					render :status => 412, :json => { :result => nil, :error => "You are the creator of this event, you cannt be removed."}
+				end
+			end
+		else
+			@event.remove_user(user)
+			respond_to do |format|
+				format.html do
+					redirect_to events_url, :notice => "You have been removed from the event." 
+				end
+				format.json do
+					render :status => 200, :json => {}
+				end
 			end
 		end
 	end

@@ -1,5 +1,6 @@
 - content_for :title, "Evebts"
 %h1 Your Events 
+= flash[:notice] unless flash[:notice].blank?
 = link_to "Create a new Event", new_event_url
 %ul
 	- @events.each do |event|

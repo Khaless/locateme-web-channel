@@ -4,6 +4,7 @@ WebChannel::Application.routes.draw do |map|
 		member do
 			post :write
 			post :join
+			post :leave
 		end
 	end
 
