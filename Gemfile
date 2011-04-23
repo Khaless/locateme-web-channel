@@ -6,6 +6,8 @@ gem 'redis'
 gem 'redis-objects'
 gem 'uuidtools'
 gem 'haml'
+gem 'SystemTimer'
+gem 'thin'
 
 # Wirble and utility_belt when using console in dev
 group :development do
